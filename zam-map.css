@@ -1,0 +1,13 @@
+.zam-map {
+    background-color: #111111;
+    cursor: grab;
+
+    overflow: hidden;
+
+    display: flex;
+    background-size: cover;
+    
+    background-repeat: no-repeat;
+
+    background-origin: content-box;
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova di ZAMMap</title>
+    <link rel="stylesheet" href="zam-map.css">
+    <script type="text/javascript" src="zam-map.js"></script>
+</head>
+<body style="margin: 0px;">
+</body>
+<script>
+    window.onload = () => {
+        function vhToPixels (vh) {
+            return Math.round(window.innerHeight / (100 / vh));
+        }
+
+        function vwToPixels (vw) {
+            return Math.round(window.innerWidth / (100 / vw));
+        }    
+
+        var map = new ZAMMap(ZAMMapType.Floor1, vwToPixels(100), vhToPixels(100), 100, 400);
+    };
+</script>
+</html>
