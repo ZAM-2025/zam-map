@@ -11,3 +11,20 @@
 
     background-origin: content-box;
 }
+
+.zam-map:active {
+    cursor: grabbing;
+}
+
+.zam-map-marker {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+
+    background-color: green;
+    border: 1px solid lightgreen;
+
+    border-radius: 10px;
+
+    cursor: pointer !important;
+}

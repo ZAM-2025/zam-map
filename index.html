@@ -19,7 +19,8 @@
             return Math.round(window.innerWidth / (100 / vw));
         }    
 
-        var map = new ZAMMap(ZAMMapType.Floor1, vwToPixels(100), vhToPixels(100), 100, 400);
+        var map = new ZAMMap(ZAMMapFloor.Floor1, vwToPixels(100), vhToPixels(100), 100, 400);
+        map.addMarker(new ZAMMarker("asd", 30, 30));
     };
 </script>
 </html>

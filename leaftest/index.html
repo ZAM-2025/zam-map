@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>leaftest</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+    <style>
+        #map { height: 90vh; }
+    </style>
+
+</head>
+<body>
+    <div id="map"></div>
+</body>
+<script>
+    window.onload = () => {
+        const b1 = L.latLng(86, 133);
+        const b2 = L.latLng(-86, 131);
+        const b = L.latLngBounds(b1, b2);
+
+        var map = L.map('map').setView([0, 0], 1);
+        map.setMaxBounds(map.getBounds());
+
+        L.tileLayer('floor-1/{z}/{x}/{y}.png', {
+            maxZoom: 4,
+            minZoom: 2,
+            noWrap: true
+        }).addTo(map);
+    }
+</script>
+</html>
