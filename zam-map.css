@@ -1,30 +1,62 @@
-.zam-map {
-    background-color: #111111;
-    cursor: grab;
+:root {
+    --Nero: #161616;
+    --GrigioScuro: #161616;
+    --GrigioChiaro: #2C2C2C;
+    --Bianco: #E8EAED;
 
-    overflow: hidden;
+    --Rosso: #AF0202;
+    --Verde: #02AF16;
 
-    display: flex;
-    background-size: cover;
+    --Sidebar-Pad: 10px;
+    --Sidebar-Gap: 25px;
+
+    --Pill: 25px;
     
-    background-repeat: no-repeat;
+    --Zoom-Color: #fff;
+    --Zoom-Disabled: #2C2C2C;
 
-    background-origin: content-box;
+    --Zoom-Border: 1px solid var(--GrigioChiaro) !important;
+    --Zoom-Padding: 7px;
 }
 
-.zam-map:active {
-    cursor: grabbing;
-}
+#zam-map {
+    width: 100%;
+    height: 100%;
 
-.zam-map-marker {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    top: 0px;
+    left: 0px;
+}
 
-    background-color: green;
-    border: 1px solid lightgreen;
+.leaflet-bar a {
+    color: var(--Zoom-Color);
+}
 
-    border-radius: 10px;
+.leaflet-bar a.leaflet-disabled {
+    color: var(--Zoom-Disabled);
+}
 
-    cursor: pointer !important;
+.leaflet-bar a:first-child {
+    background-color: var(--GrigioScuro) !important;
+    border-top-left-radius: var(--Pill) !important;
+    border-top-right-radius: var(--Pill) !important;
+
+    border: var(--Zoom-Border);
+
+    padding: var(--Zoom-Padding);
+}
+
+.leaflet-bar a:last-child {
+    background-color: var(--GrigioScuro) !important;
+    border-bottom-left-radius: var(--Pill) !important;
+    border-bottom-right-radius: var(--Pill) !important;
+
+    border: var(--Zoom-Border);
+
+    padding: var(--Zoom-Padding);
+}
+
+.leaflet-bar {
+    border: none !important;
+    border-radius: var(--Pill);
 }

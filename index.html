@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prova di ZAMMap</title>
+    <title>ZamMap</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
     <link rel="stylesheet" href="zam-map.css">
     <script type="text/javascript" src="zam-map.js"></script>
 </head>
-<body style="margin: 0px;">
+<body>
+    
 </body>
 <script>
-    window.onload = () => {
-        function vhToPixels (vh) {
-            return Math.round(window.innerHeight / (100 / vh));
-        }
-
-        function vwToPixels (vw) {
-            return Math.round(window.innerWidth / (100 / vw));
-        }    
-
-        var map = new ZAMMap(ZAMMapFloor.Floor1, vwToPixels(100), vhToPixels(100), 100, 400);
-        map.addMarker(new ZAMMarker("asd", 30, 30));
-    };
+    var map = new ZAMMap(ZAMMapType.Floor);
 </script>
 </html>
