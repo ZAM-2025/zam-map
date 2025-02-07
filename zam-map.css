@@ -13,7 +13,7 @@
 
     --Pill: 25px;
     
-    --Zoom-Color: #fff;
+    --Zoom-Color: #ffffff;
     --Zoom-Disabled: #575757;
 
     --Zoom-Border: 1px solid var(--GrigioChiaro) !important;
@@ -32,7 +32,7 @@
 }
 
 .leaflet-bar a {
-    color: var(--Zoom-Color);
+    color: var(--Zoom-Color) !important;
 }
 
 .leaflet-bar a.leaflet-disabled {
