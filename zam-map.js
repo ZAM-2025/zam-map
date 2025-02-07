@@ -16,7 +16,8 @@ class ZAMMap {
         }
 
         this.map = L.map("zam-map", {
-            zoomControl: false
+            zoomControl: false,
+            attributionControl: false
         }).setView([0, 0], 1);
         this.map.setMaxBounds(this.map.getBounds());
 
