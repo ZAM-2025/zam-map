@@ -5,7 +5,7 @@ let ZAMMapType = {
 }
 
 class ZAMMap {
-    constructor(/**@type {ZAMMapType} */type, /**@type {HTMLElement} */ container, path) {
+    constructor(/**@type {ZAMMapType} */type, path, /**@type {HTMLElement} */ container) {
         this.mapElem = document.createElement("div");
         this.mapElem.id = "zam-map";
 

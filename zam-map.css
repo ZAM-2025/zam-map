@@ -26,6 +26,8 @@
     position: absolute;
     top: 0px;
     left: 0px;
+
+    background: var(--GrigioScuro);
 }
 
 .leaflet-bar a {
