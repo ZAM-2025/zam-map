@@ -5,7 +5,7 @@ let ZAMMapType = {
 }
 
 class ZAMMap {
-    constructor(/**@type {ZAMMapType} */type, /**@type {HTMLElement} */ container) {
+    constructor(/**@type {ZAMMapType} */type, /**@type {HTMLElement} */ container, path) {
         this.mapElem = document.createElement("div");
         this.mapElem.id = "zam-map";
 
@@ -24,7 +24,11 @@ class ZAMMap {
             position: 'bottomright'
         }).addTo(this.map);
 
-        L.tileLayer(type + "/{z}/{x}/{y}.png", {
+        if(path == null) {
+        	path = "";
+        }
+
+        L.tileLayer(path + type + "/{z}/{x}/{y}.png", {
             maxZoom: 4,
             minZoom: 2,
             noWrap: true,
