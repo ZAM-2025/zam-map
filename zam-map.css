@@ -2,6 +2,7 @@
     --Nero: #161616;
     --GrigioScuro: #161616;
     --GrigioChiaro: #2C2C2C;
+    --Map-BG: #1C1C1C;
     --Bianco: #E8EAED;
 
     --Rosso: #AF0202;
@@ -27,7 +28,7 @@
     top: 0px;
     left: 0px;
 
-    background: var(--Nero);
+    background: var(--Map-BG);
 }
 
 .leaflet-bar a {
@@ -35,7 +36,7 @@
 }
 
 .leaflet-bar a.leaflet-disabled {
-    color: var(--Zoom-Disabled);
+    color: var(--Zoom-Disabled) !important;
 }
 
 .leaflet-bar a:first-child {
