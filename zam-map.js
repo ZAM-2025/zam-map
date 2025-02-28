@@ -34,6 +34,13 @@ class ZAMMapFAB extends HTMLElement {
 
             // Quando clicco un piano:
             floorButton.onclick = () => {
+                if(floor == selected) {
+                    // Se seleziono il piano attuale,
+                    // chiudo il FAB e non faccio niente
+                    this.removeAttribute("open");
+                    return;
+                }
+
                 // Rimuovo la mappa esistente
                 // TODO: Togliere anche eventuali marker/poligoni
                 map.eachLayer(function(layer) {
