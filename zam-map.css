@@ -10,6 +10,15 @@
 
     --Zoom-Border: 1px solid var(--GrigioChiaro) !important;
     --Zoom-Padding: 7px;
+
+    --FAB-Size: 60px;
+    --FAB-Offset: 3vmin;
+    --FAB-Open: calc((var(--FAB-Size) + var(--FAB-Gap) / 2) * 4);
+    --FAB-Gap: 10px;
+}
+
+* {
+    user-select: none;
 }
 
 #zam-map {
@@ -54,4 +63,76 @@
 .leaflet-bar {
     border: none !important;
     border-radius: var(--Pill);
+}
+
+zam-map-fab {
+    background-color: var(--GrigioScuro);
+    border: var(--Zoom-Border);
+    box-shadow: var(--Generic-Shadow);
+    border-radius: var(--FAB-Size);
+
+    width: var(--FAB-Size);
+    height: var(--FAB-Size);
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    position: absolute;
+    z-index: 2;
+
+    gap: var(--FAB-Gap);
+
+    top: var(--FAB-Offset);
+    right: var(--FAB-Offset);
+
+    cursor: pointer;
+    transition: background-color 0.25s ease-in-out, height 0.1s ease-in-out;
+}
+
+zam-map-fab:hover {
+    background-color: var(--GrigioMedio);
+}
+
+zam-map-fab[open] {
+    height: var(--FAB-Open);
+    justify-content: flex-start;
+}
+
+
+zam-map-fab[open]:hover {
+    background-color: var(--GrigioScuro);
+}
+
+.fab-img {
+    width: calc(var(--FAB-Size) / 1.5);
+    height: calc(var(--FAB-Size) / 1.5);
+    margin-top: 15%;
+}
+
+.floor-button {
+    border-radius: var(--FAB-Size);
+
+    width: var(--FAB-Size);
+    height: var(--FAB-Size);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-direction: column;
+    overflow: hidden;
+
+    font-size: larger;
+
+    cursor: pointer;
+    transition: background-color 0.25s ease-in-out;
+}
+
+.floor-button[selected] {
+    background-color: var(--GrigioChiaro);
+}
+
+.floor-button:hover {
+    background-color: var(--GrigioMedio);
 }
