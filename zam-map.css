@@ -108,6 +108,7 @@ zam-map-fab[open]:hover {
     width: calc(var(--FAB-Size) / 1.5);
     height: calc(var(--FAB-Size) / 1.5);
     margin-top: 15%;
+    margin-right: 4%;
 }
 
 .floor-button {
