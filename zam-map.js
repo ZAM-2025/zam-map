@@ -71,7 +71,7 @@ class ZAMMapFAB extends HTMLElement {
         img.className = "fab-img";
         img.src = "svg/floor.svg";
         this.appendChild(img);
-
+        
         img.onclick = (e) => {
             if(this.getAttribute("open") === null) {
                 this.setAttribute("open", "");
@@ -118,6 +118,26 @@ class ZAMMap {
 
         var fab = document.createElement("zam-map-fab");
         fab.add(Object.values(ZAMMapType), type, this.map, path);
+
+        var auth = new ZAMAuth("http://localhost:8080");
+        var __map = this.map;
+        auth.getFloorAssets(0, (assets) => {
+            for(var asset of assets) {
+                var coords = JSON.parse(asset.coords);
+
+                var polygon = L.polygon(coords, {
+                    opacity: 0.0,
+                    fillOpacity: 0.0,
+                    name: asset.nome
+                });
+            
+                polygon.on('click', (e) => {
+                    console.log(e);
+                    alert("Cliccato su " + e.target.options["name"]);
+                })
+                polygon.addTo(__map);
+            }
+        });
     }
 }
 
