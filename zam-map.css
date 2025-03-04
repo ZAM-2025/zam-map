@@ -13,8 +13,8 @@
 
     --FAB-Size: 60px;
     --FAB-Offset: 3vmin;
-    --FAB-Open: calc((var(--FAB-Size) + var(--FAB-Gap) / 2) * 4);
-    --FAB-Gap: 10px;
+    --FAB-Open: calc(var(--FAB-Size) * 3 + var(--FAB-Size) / 1.5);
+    --FAB-Gap: 0px;
 }
 
 * {
@@ -81,8 +81,6 @@ zam-map-fab {
     position: absolute;
     z-index: 2;
 
-    gap: var(--FAB-Gap);
-
     top: var(--FAB-Offset);
     right: var(--FAB-Offset);
 
@@ -98,7 +96,6 @@ zam-map-fab[open] {
     height: var(--FAB-Open);
     justify-content: flex-start;
 }
-
 
 zam-map-fab[open]:hover {
     background-color: var(--GrigioScuro);
@@ -136,4 +133,12 @@ zam-map-fab[open]:hover {
 
 .floor-button:hover {
     background-color: var(--GrigioMedio);
+}
+
+zam-map-fab .floor-button {
+    display: none;
+}
+
+zam-map-fab[open] .floor-button {
+    display: flex;
 }
