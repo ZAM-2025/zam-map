@@ -15,6 +15,10 @@
     --FAB-Offset: 3vmin;
     --FAB-Open: calc(var(--FAB-Size) * 3 + var(--FAB-Size) / 1.5);
     --FAB-Gap: 0px;
+
+    --Popup-CR: 10px;
+    --Popup-Width: 200px;
+    --Popup-Height: 50px;
 }
 
 * {
@@ -142,3 +146,32 @@ zam-map-fab .floor-button {
 zam-map-fab[open] .floor-button {
     display: flex;
 }
+
+zam-asset-popup {
+    display: none;
+}
+
+zam-asset-popup[active] {
+    min-width: var(--Popup-Width);
+    min-height: var(--Popup-Height);
+    
+    display: flex;
+    flex-direction: column;
+    
+    background-color: var(--GrigioScuro);
+    border: 1px solid var(--GrigioChiaro);
+    border-radius: var(--Popup-CR);
+    box-shadow: var(--Generic-Shadow);
+    color: #ffffff;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    z-index: 10;
+
+    /* Temp */
+    justify-content: center;
+    align-items: center;
+}
+

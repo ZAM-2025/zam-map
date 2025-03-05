@@ -1,15 +1,27 @@
+const POPUP_X_OFFSET = -100;
+const POPUP_Y_OFFSET = -75;
+
 let ZAMMapType = {
     Floor: {
         path: "floor-1",
-        label: "1"
+        label: "1",
+        id: 2
     },
     Ground: {
         path: "floor-t",  
-        label: "T"
+        label: "T",
+        id: 1
     },
     Parking: {
         path: "floor-p",
-        label: "P"
+        label: "P",
+        id: 0
+    }
+}
+
+class ZAMAssetPopup extends HTMLElement {
+    constructor() {
+        super();
     }
 }
 
@@ -64,8 +76,11 @@ class ZAMMapFAB extends HTMLElement {
     }
 
     add(/**@type {Array} */ floors, selected, map, path) {
+        console.log("Loading floor " + selected);
         // Resetto eventuali contenuti precedenti
         this.innerHTML = "";
+        ClearPolys(map);
+        LoadPolys(map, selected.id);
 
         var img = document.createElement("img");
         img.className = "fab-img";
@@ -83,6 +98,73 @@ class ZAMMapFAB extends HTMLElement {
         this.fillButtons(floors, selected, map, path);
         document.body.appendChild(this);
     }
+}
+
+function ClearPolys(map) {
+    map.eachLayer(function(layer) {
+        if (layer._path != undefined) {
+            console.log(layer);
+            map.removeLayer(layer);
+        }
+    });
+}
+
+function LoadPolys(map, floor) {
+    // Oggetto auth per caricare gli asset dal server
+    var auth = new ZAMAuth("http://localhost:8080");
+
+    var popup = document.getElementById("zam-asset-popup");
+
+    auth.getFloorAssets(floor, (assets) => {
+        // Dati dal server
+        for(var asset of assets) {
+            var coords = JSON.parse(asset.coords);
+
+            // Poligono invisibile
+            var polygon = L.polygon(coords, {
+                opacity: 0.0,
+                fillOpacity: 0.0,
+                name: asset.nome
+            });
+        
+            polygon.on('mouseover', (e) => {
+                popup.setAttribute("active", "");
+                popup.innerText = e.target.options["name"];
+
+                //var startX = e.containerPoint.x;
+                //var startY = e.containerPoint.y;
+
+                //var endX = e.target._pxBounds.max.x;
+                //var endY = e.target._pxBounds.max.y;
+
+                //var targetWidth = (endX - startX);
+                //var targetHeight = (endY - startY);
+                
+                //var targetX = startX + POPUP_X_OFFSET;
+                //var targetY = startY + POPUP_Y_OFFSET;
+
+                //popup.style.top = targetY + "px";
+                //popup.style.left = targetX + "px";
+                
+                e.target.on('mousemove', (me) => {
+                    popup.style.top = me.originalEvent.clientY + POPUP_Y_OFFSET + "px";
+                    popup.style.left = me.originalEvent.clientX + POPUP_X_OFFSET + "px";
+                });
+            });
+
+            polygon.on('mouseout', () => {
+                popup.removeAttribute("active");
+                // Quando il popup è [active], è impostato display: none
+                // Ma per sicurezza lo togliamo di vista comunque
+                popup.style.top = "-100px";
+                popup.style.left = "-100px";
+
+                polygon.off('mousemove');
+            });
+            
+            polygon.addTo(map);
+        }
+    });
 }
 
 class ZAMMap {
@@ -116,29 +198,14 @@ class ZAMMap {
             noWrap: true,
         }).addTo(this.map);
 
+        var popup = document.createElement("zam-asset-popup");
+        popup.id = "zam-asset-popup";
+        document.body.appendChild(popup);
+
         var fab = document.createElement("zam-map-fab");
         fab.add(Object.values(ZAMMapType), type, this.map, path);
-
-        var auth = new ZAMAuth("http://localhost:8080");
-        var __map = this.map;
-        auth.getFloorAssets(0, (assets) => {
-            for(var asset of assets) {
-                var coords = JSON.parse(asset.coords);
-
-                var polygon = L.polygon(coords, {
-                    opacity: 0.0,
-                    fillOpacity: 0.0,
-                    name: asset.nome
-                });
-            
-                polygon.on('click', (e) => {
-                    console.log(e);
-                    alert("Cliccato su " + e.target.options["name"]);
-                })
-                polygon.addTo(__map);
-            }
-        });
     }
 }
 
 customElements.define("zam-map-fab", ZAMMapFAB);
+customElements.define("zam-asset-popup", ZAMAssetPopup);
