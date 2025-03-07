@@ -111,7 +111,7 @@ function ClearPolys(map) {
 
 function LoadPolys(map, floor) {
     // Oggetto auth per caricare gli asset dal server
-    var auth = new ZAMAuth("http://localhost:8080");
+    var auth = new ZAMAuth();;
 
     var popup = document.getElementById("zam-asset-popup");
 
@@ -119,6 +119,23 @@ function LoadPolys(map, floor) {
         // Dati dal server
         for(var asset of assets) {
             var coords = JSON.parse(asset.coords);
+            auth.getBookingsByAsset(asset.id, (bookings) => {
+                if(bookings.length > 0) {
+                    for(var booking of bookings) {
+                        var body = booking.body;
+
+                        var start = new Date(body.inizio).valueOf();
+                        var end = new Date(body.fine).valueOf();
+                        var now = new Date().getTime();
+
+                        console.log({start, end, now});
+
+                        if(start <= now && end >= now) {
+                            console.log("in uso!");
+                        }
+                    }
+                }
+            });
 
             // Poligono invisibile
             var polygon = L.polygon(coords, {
