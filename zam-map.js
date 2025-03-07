@@ -119,34 +119,47 @@ function LoadPolys(map, floor) {
         // Dati dal server
         for(var asset of assets) {
             var coords = JSON.parse(asset.coords);
-            auth.getBookingsByAsset(asset.id, (bookings) => {
-                if(bookings.length > 0) {
-                    for(var booking of bookings) {
-                        var body = booking.body;
-
-                        var start = new Date(body.inizio).valueOf();
-                        var end = new Date(body.fine).valueOf();
-                        var now = new Date().getTime();
-
-                        console.log({start, end, now});
-
-                        if(start <= now && end >= now) {
-                            console.log("in uso!");
-                        }
-                    }
-                }
-            });
 
             // Poligono invisibile
             var polygon = L.polygon(coords, {
                 opacity: 0.0,
                 fillOpacity: 0.0,
-                name: asset.nome
+                name: asset.nome,
+                id: asset.id
             });
         
             polygon.on('mouseover', (e) => {
                 popup.setAttribute("active", "");
                 popup.innerText = e.target.options["name"];
+
+                auth.getBookingsByAsset(e.target.options["id"], (bookings) => {
+                    if(bookings.length > 0) {
+                        for(var booking of bookings) {
+                            var body = booking.body;
+    
+                            var start = new Date(body.inizio);
+                            var end = new Date(body.fine);
+                            var now = new Date();
+
+                            var isFree = false;
+        
+                            if(start <= now && end >= now) {
+                                isFree = true;
+                            }
+
+                            var indicator = document.createElement("div");
+                            indicator.className = "indicatore";
+
+                            if(isFree) {
+                                indicator.setAttribute("libero", "");
+                            } else {
+                                indicator.setAttribute("occupato", "");
+                            }
+
+                            popup.appendChild(indicator);
+                        }
+                    }
+                });
 
                 //var startX = e.containerPoint.x;
                 //var startY = e.containerPoint.y;

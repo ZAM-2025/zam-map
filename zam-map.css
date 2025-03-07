@@ -154,7 +154,7 @@ zam-asset-popup[active] {
     min-height: var(--Popup-Height);
     
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     
     background-color: var(--GrigioScuro);
     border: 1px solid var(--GrigioChiaro);
