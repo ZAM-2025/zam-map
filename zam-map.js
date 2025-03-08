@@ -130,7 +130,13 @@ function LoadPolys(map, floor) {
         
             polygon.on('mouseover', (e) => {
                 popup.setAttribute("active", "");
-                popup.innerText = e.target.options["name"];
+
+                popup.innerHTML = "";
+
+                var popupName = document.createElement("p");
+                popupName.innerText = e.target.options["name"];
+
+                popup.appendChild(popupName);
 
                 auth.getBookingsByAsset(e.target.options["id"], (bookings) => {
                     if(bookings.length > 0) {
@@ -147,13 +153,15 @@ function LoadPolys(map, floor) {
                                 isFree = true;
                             }
 
-                            var indicator = document.createElement("div");
+                            var indicator = document.createElement("p");
                             indicator.className = "indicatore";
 
                             if(isFree) {
                                 indicator.setAttribute("libero", "");
+                                indicator.innerText = "Libero";
                             } else {
                                 indicator.setAttribute("occupato", "");
+                                indicator.innerText = "Occupato";
                             }
 
                             popup.appendChild(indicator);

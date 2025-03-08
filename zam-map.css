@@ -16,7 +16,7 @@
 
     --Popup-CR: 10px;
     --Popup-Width: 200px;
-    --Popup-Height: 50px;
+    --Popup-Height: 60px;
 }
 
 * {
@@ -152,9 +152,11 @@ zam-asset-popup {
 zam-asset-popup[active] {
     min-width: var(--Popup-Width);
     min-height: var(--Popup-Height);
+    max-height: var(--Popup-Height);
+    max-height: var(--Popup-Height);
     
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     
     background-color: var(--GrigioScuro);
     border: 1px solid var(--GrigioChiaro);
@@ -162,14 +164,20 @@ zam-asset-popup[active] {
     box-shadow: var(--Generic-Shadow);
     color: #ffffff;
 
+    padding: 0;
+    padding-left: 10px;
+
     position: absolute;
     top: 0px;
     left: 0px;
 
     z-index: 10;
 
+    gap: 0px;
+    line-height: 0px;
+
     /* Temp */
     justify-content: center;
-    align-items: center;
+    align-items: start;
 }
 
