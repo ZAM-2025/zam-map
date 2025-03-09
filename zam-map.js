@@ -143,6 +143,8 @@ function LoadPolys(map, floor) {
                         for(var booking of bookings) {
                             var body = booking.body;
     
+                            // Controllo se la data/ora attuale è 
+                            // compresa tra quelle di inizio e fine della prenotazione
                             var start = new Date(body.inizio);
                             var end = new Date(body.fine);
                             var now = new Date();
@@ -150,6 +152,8 @@ function LoadPolys(map, floor) {
                             var isFree = false;
         
                             if(start <= now && end >= now) {
+                                isFree = false;
+                            } else {
                                 isFree = true;
                             }
 
@@ -168,21 +172,6 @@ function LoadPolys(map, floor) {
                         }
                     }
                 });
-
-                //var startX = e.containerPoint.x;
-                //var startY = e.containerPoint.y;
-
-                //var endX = e.target._pxBounds.max.x;
-                //var endY = e.target._pxBounds.max.y;
-
-                //var targetWidth = (endX - startX);
-                //var targetHeight = (endY - startY);
-                
-                //var targetX = startX + POPUP_X_OFFSET;
-                //var targetY = startY + POPUP_Y_OFFSET;
-
-                //popup.style.top = targetY + "px";
-                //popup.style.left = targetX + "px";
                 
                 e.target.on('mousemove', (me) => {
                     popup.style.top = me.originalEvent.clientY + POPUP_Y_OFFSET + "px";
@@ -198,6 +187,19 @@ function LoadPolys(map, floor) {
                 popup.style.left = "-100px";
 
                 polygon.off('mousemove');
+            });
+
+            polygon.on('click', (e) => {
+                var bars = document.getElementsByTagName("zam-booking-sidebar");
+                for(var elem of bars) {
+                    elem.remove();
+                }
+                
+                console.log(e);
+                var name = e.target.options["name"];
+
+                var bookBar = new BookingSidebar();
+                bookBar.add(name, );
             });
             
             polygon.addTo(map);
