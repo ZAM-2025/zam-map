@@ -189,6 +189,7 @@ function LoadPolys(map, floor) {
                 
                 console.log(e);
                 var name = e.target.options["name"];
+                var id = e.target.options["id"];
 
                 auth.getBookingsByAsset(e.target.options.id, (bookings) => {
                     var isFree = true;
@@ -203,7 +204,7 @@ function LoadPolys(map, floor) {
                     }
 
                     var bookBar = new BookingSidebar();
-                    bookBar.add(name, null, null, isFree);
+                    bookBar.add(name, null, null, isFree, id);
                 });
             });
             
