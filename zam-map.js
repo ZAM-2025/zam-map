@@ -125,7 +125,8 @@ function LoadPolys(map, floor) {
                 opacity: 0.0,
                 fillOpacity: 0.0,
                 name: asset.nome,
-                id: asset.id
+                id: asset.id,
+                data: asset
             });
         
             polygon.on('mouseover', (e) => {
@@ -139,38 +140,29 @@ function LoadPolys(map, floor) {
                 popup.appendChild(popupName);
 
                 auth.getBookingsByAsset(e.target.options["id"], (bookings) => {
+                    var indicator = document.createElement("p");
+                    indicator.className = "indicatore";
+
+                    var isFree = true;
+
                     if(bookings.length > 0) {
                         for(var booking of bookings) {
-                            var body = booking.body;
-    
-                            // Controllo se la data/ora attuale è 
-                            // compresa tra quelle di inizio e fine della prenotazione
-                            var start = new Date(body.inizio);
-                            var end = new Date(body.fine);
-                            var now = new Date();
-
-                            var isFree = false;
-        
-                            if(start <= now && end >= now) {
+                            if(booking.isBooked) {
                                 isFree = false;
-                            } else {
-                                isFree = true;
+                                break;
                             }
-
-                            var indicator = document.createElement("p");
-                            indicator.className = "indicatore";
-
-                            if(isFree) {
-                                indicator.setAttribute("libero", "");
-                                indicator.innerText = "Libero";
-                            } else {
-                                indicator.setAttribute("occupato", "");
-                                indicator.innerText = "Occupato";
-                            }
-
-                            popup.appendChild(indicator);
                         }
                     }
+
+                    if(isFree) {
+                        indicator.setAttribute("libero", "");
+                        indicator.innerText = "Libero";
+                    } else {
+                        indicator.setAttribute("occupato", "");
+                        indicator.innerText = "Occupato";
+                    }
+
+                    popup.appendChild(indicator);
                 });
                 
                 e.target.on('mousemove', (me) => {
@@ -198,8 +190,21 @@ function LoadPolys(map, floor) {
                 console.log(e);
                 var name = e.target.options["name"];
 
-                var bookBar = new BookingSidebar();
-                bookBar.add(name, );
+                auth.getBookingsByAsset(e.target.options.id, (bookings) => {
+                    var isFree = true;
+                    
+                    if(bookings.length > 0) {
+                        for(var booking of bookings) {
+                            if(booking.isBooked) {
+                                isFree = false;
+                                break;
+                            }
+                        }
+                    }
+
+                    var bookBar = new BookingSidebar();
+                    bookBar.add(name, null, null, isFree);
+                });
             });
             
             polygon.addTo(map);
