@@ -134,11 +134,6 @@ function LoadPolys(map, floor) {
 
                 popup.innerHTML = "";
 
-                var popupName = document.createElement("p");
-                popupName.innerText = e.target.options["name"];
-
-                popup.appendChild(popupName);
-
                 auth.getBookingsByAsset(e.target.options["id"], (bookings) => {
                     var indicator = document.createElement("p");
                     indicator.className = "indicatore";
@@ -162,6 +157,12 @@ function LoadPolys(map, floor) {
                         indicator.innerText = "Occupato";
                     }
 
+                    popup.innerHTML = "";
+                    var popupName = document.createElement("p");
+                    popupName.innerText = e.target.options["name"];
+
+                    popup.appendChild(popupName);
+                    
                     popup.appendChild(indicator);
                 });
                 
