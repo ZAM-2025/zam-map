@@ -10,7 +10,7 @@
     --Zoom-Padding: 7px;
 
     --FAB-Size: 60px;
-    --FAB-Offset: 3vmin;
+    --FAB-Offset: 10px;
     --FAB-Open: calc(var(--FAB-Size) * 3 + var(--FAB-Size) / 1.5);
     --FAB-Gap: 0px;
 

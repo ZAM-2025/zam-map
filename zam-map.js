@@ -190,13 +190,23 @@ function LoadPolys(map, floor) {
                 console.log(e);
                 var name = e.target.options["name"];
                 var id = e.target.options["id"];
+                console.log(e.target.options);
 
                 auth.getBookingsByAsset(e.target.options.id, (bookings) => {
                     var isFree = true;
+
+                    var start = null;
+                    var end = null;
                     
                     if(bookings.length > 0) {
                         for(var booking of bookings) {
                             if(booking.isBooked) {
+                                var startDate = new Date(booking.body.inizio);
+                                var endDate = new Date(booking.body.fine);
+
+                                start = startDate.getHours() + ":" + startDate.getMinutes();
+                                end = endDate.getHours() + ":" + endDate.getMinutes();
+
                                 isFree = false;
                                 break;
                             }
@@ -204,7 +214,7 @@ function LoadPolys(map, floor) {
                     }
 
                     var bookBar = new BookingSidebar();
-                    bookBar.add(name, null, null, isFree, id);
+                    bookBar.add(name, start, end, isFree, id);
                 });
             });
             
