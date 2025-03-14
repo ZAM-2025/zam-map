@@ -75,12 +75,12 @@ class ZAMMapFAB extends HTMLElement {
         });
     }
 
-    add(/**@type {Array} */ floors, selected, map, path) {
+    add(/**@type {Array} */ floors, selected, map, path, isDummy) {
         console.log("Loading floor " + selected);
         // Resetto eventuali contenuti precedenti
         this.innerHTML = "";
         ClearPolys(map);
-        LoadPolys(map, selected.id);
+        LoadPolys(map, selected.id, isDummy);
 
         var img = document.createElement("img");
         img.className = "fab-img";
@@ -109,11 +109,34 @@ function ClearPolys(map) {
     });
 }
 
-function LoadPolys(map, floor) {
+function LoadPolys(map, floor, isDummy) {
     // Oggetto auth per caricare gli asset dal server
-    var auth = new ZAMAuth();;
+    var auth = new ZAMAuth();
 
     var popup = document.getElementById("zam-asset-popup");
+
+    if(isDummy != undefined && isDummy != null && isDummy == true) {
+        console.log("dummy 2");
+
+        var points = [];
+
+        map.on("click", (e) => {
+            console.log(e);
+            ClearPolys(map);
+
+            points.push(e.latlng);
+
+            var polygon = L.polygon(points);
+            polygon.addTo(map);
+        });
+
+        map.on("contextmenu", (e) => {
+            alert(JSON.stringify(points));
+            points = [];
+            ClearPolys(map);
+        })
+        return;
+    }
 
     auth.getFloorAssets(floor, (assets) => {
         // Dati dal server
@@ -225,7 +248,7 @@ function LoadPolys(map, floor) {
 }
 
 class ZAMMap {
-    constructor(/**@type {ZAMMapType} */type, path, /**@type {HTMLElement} */ container) {
+    constructor(/**@type {ZAMMapType} */type, path, /**@type {HTMLElement} */ container, isDummy) {
         this.mapElem = document.createElement("div");
         this.mapElem.id = "zam-map";
 
@@ -259,8 +282,15 @@ class ZAMMap {
         popup.id = "zam-asset-popup";
         document.body.appendChild(popup);
 
+        if(isDummy != undefined && isDummy != null && isDummy == true) {
+            console.log("dummy");
+            this.isDummy = true;
+        } else {
+            this.isDummy = false;
+        }
+
         var fab = document.createElement("zam-map-fab");
-        fab.add(Object.values(ZAMMapType), type, this.map, path);
+        fab.add(Object.values(ZAMMapType), type, this.map, path, this.isDummy);
     }
 }
 
