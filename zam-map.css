@@ -1,5 +1,5 @@
 :root {
-    --Map-BG: #1C1C1C;
+    --Map-BG: #161616;
 
     --Pill: 25px;
     
@@ -14,9 +14,16 @@
     --FAB-Open: calc(var(--FAB-Size) * 3 + var(--FAB-Size) / 1.5);
     --FAB-Gap: 0px;
 
+    --Popup-Display: flex;
     --Popup-CR: 10px;
     --Popup-Width: 200px;
     --Popup-Height: 60px;
+}
+
+@media only screen and (max-width: 700px) {
+    :root {
+        --Popup-Display: none;
+    }
 }
 
 * {
@@ -155,7 +162,7 @@ zam-asset-popup[active] {
     max-height: var(--Popup-Height);
     max-height: var(--Popup-Height);
     
-    display: flex;
+    display: var(--Popup-Display);
     flex-direction: column;
     
     background-color: var(--GrigioScuro);
