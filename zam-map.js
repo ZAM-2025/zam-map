@@ -138,112 +138,116 @@ function LoadPolys(map, floor, isDummy) {
         return;
     }
 
-    auth.getFloorAssets(floor, (assets) => {
-        // Dati dal server
-        for(var asset of assets) {
-            var coords = JSON.parse(asset.coords);
-
-            // Poligono invisibile
-            var polygon = L.polygon(coords, {
-                opacity: 0.0,
-                fillOpacity: 0.0,
-                name: asset.nome,
-                id: asset.id,
-                data: asset
-            });
-        
-            polygon.on('mouseover', (e) => {
-                popup.setAttribute("active", "");
-
-                popup.innerHTML = "";
-
-                auth.getBookingsByAsset(e.target.options["id"], (bookings) => {
-                    var indicator = document.createElement("p");
-                    indicator.className = "indicatore";
-
-                    var isFree = true;
-
-                    if(bookings.length > 0) {
-                        for(var booking of bookings) {
-                            if(booking.isBooked) {
-                                isFree = false;
-                                break;
+    auth.getUserInfo((userInfo) => {
+        auth.getFloorAssets(floor, (assets) => {
+            // Dati dal server
+            for(var asset of assets) {
+                var coords = JSON.parse(asset.coords);
+    
+                // Poligono invisibile
+                var polygon = L.polygon(coords, {
+                    opacity: 0.0,
+                    fillOpacity: 0.0,
+                    name: asset.nome,
+                    id: asset.id,
+                    data: asset
+                });
+            
+                polygon.on('mouseover', (e) => {
+                    popup.setAttribute("active", "");
+    
+                    popup.innerHTML = "";
+    
+                    auth.getBookingsByAsset(e.target.options["id"], (bookings) => {
+                        var indicator = document.createElement("p");
+                        indicator.className = "indicatore";
+    
+                        var isFree = true;
+    
+                        if(bookings.length > 0) {
+                            for(var booking of bookings) {
+                                if(booking.isBooked) {
+                                    isFree = false;
+                                    break;
+                                }
                             }
                         }
-                    }
-
-                    if(isFree) {
-                        indicator.setAttribute("libero", "");
-                        indicator.innerText = "Libero";
-                    } else {
-                        indicator.setAttribute("occupato", "");
-                        indicator.innerText = "Occupato";
-                    }
-
-                    popup.innerHTML = "";
-                    var popupName = document.createElement("p");
-                    popupName.innerText = e.target.options["name"];
-
-                    popup.appendChild(popupName);
+    
+                        if(isFree) {
+                            indicator.setAttribute("libero", "");
+                            indicator.innerText = "Libero";
+                        } else {
+                            indicator.setAttribute("occupato", "");
+                            indicator.innerText = "Occupato";
+                        }
+    
+                        popup.innerHTML = "";
+                        var popupName = document.createElement("p");
+                        popupName.innerText = e.target.options["name"];
+    
+                        popup.appendChild(popupName);
+                        
+                        popup.appendChild(indicator);
+                    });
                     
-                    popup.appendChild(indicator);
+                    e.target.on('mousemove', (me) => {
+                        popup.style.top = me.originalEvent.clientY + POPUP_Y_OFFSET + "px";
+                        popup.style.left = me.originalEvent.clientX + POPUP_X_OFFSET + "px";
+                    });
                 });
-                
-                e.target.on('mousemove', (me) => {
-                    popup.style.top = me.originalEvent.clientY + POPUP_Y_OFFSET + "px";
-                    popup.style.left = me.originalEvent.clientX + POPUP_X_OFFSET + "px";
+    
+                polygon.on('mouseout', () => {
+                    popup.removeAttribute("active");
+                    // Quando il popup è [active], è impostato display: none
+                    // Ma per sicurezza lo togliamo di vista comunque
+                    popup.style.top = "-100px";
+                    popup.style.left = "-100px";
+    
+                    polygon.off('mousemove');
                 });
-            });
-
-            polygon.on('mouseout', () => {
-                popup.removeAttribute("active");
-                // Quando il popup è [active], è impostato display: none
-                // Ma per sicurezza lo togliamo di vista comunque
-                popup.style.top = "-100px";
-                popup.style.left = "-100px";
-
-                polygon.off('mousemove');
-            });
-
-            polygon.on('click', (e) => {
-                var bars = document.getElementsByTagName("zam-booking-sidebar");
-                for(var elem of bars) {
-                    elem.remove();
+    
+                if(userInfo.type != ZAMUserType.GESTORE) {
+                    polygon.on('click', (e) => {
+                        var bars = document.getElementsByTagName("zam-booking-sidebar");
+                        for(var elem of bars) {
+                            elem.remove();
+                        }
+                        
+                        console.log(e);
+                        var name = e.target.options["name"];
+                        var id = e.target.options["id"];
+                        console.log(e.target.options);
+        
+                        auth.getBookingsByAsset(e.target.options.id, (bookings) => {
+                            var isFree = true;
+        
+                            var start = null;
+                            var end = null;
+                            
+                            if(bookings.length > 0) {
+                                for(var booking of bookings) {
+                                    if(booking.isBooked) {
+                                        var startDate = new Date(booking.body.inizio);
+                                        var endDate = new Date(booking.body.fine);
+        
+                                        start = startDate.getHours() + ":" + startDate.getMinutes();
+                                        end = endDate.getHours() + ":" + endDate.getMinutes();
+        
+                                        isFree = false;
+                                        break;
+                                    }
+                                }
+                            }
+        
+                            var bookBar = new BookingSidebar();
+                            bookBar.add(name, start, end, isFree, id);
+                        });
+                    });
                 }
                 
-                console.log(e);
-                var name = e.target.options["name"];
-                var id = e.target.options["id"];
-                console.log(e.target.options);
-
-                auth.getBookingsByAsset(e.target.options.id, (bookings) => {
-                    var isFree = true;
-
-                    var start = null;
-                    var end = null;
-                    
-                    if(bookings.length > 0) {
-                        for(var booking of bookings) {
-                            if(booking.isBooked) {
-                                var startDate = new Date(booking.body.inizio);
-                                var endDate = new Date(booking.body.fine);
-
-                                start = startDate.getHours() + ":" + startDate.getMinutes();
-                                end = endDate.getHours() + ":" + endDate.getMinutes();
-
-                                isFree = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    var bookBar = new BookingSidebar();
-                    bookBar.add(name, start, end, isFree, id);
-                });
-            });
-            
-            polygon.addTo(map);
-        }
+                polygon.addTo(map);
+            }
+        });      
     });
 }
 
