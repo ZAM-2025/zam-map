@@ -183,10 +183,10 @@ function LoadPolys(map, floor, isDummy) {
     
                         popup.innerHTML = "";
                         var popupName = document.createElement("p");
+                        popupName.setAttribute("bold", "");
                         popupName.innerText = e.target.options["name"];
     
                         popup.appendChild(popupName);
-                        
                         popup.appendChild(indicator);
                     });
                     

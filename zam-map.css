@@ -20,6 +20,14 @@
     --Popup-Height: 60px;
 }
 
+@media (prefers-color-scheme: light) {
+    :root {
+        --Zoom-Disabled: #969696;
+        --Zoom-Color: #000000;
+        --Map-BG: #F0F0F0;
+    }
+}
+
 @media only screen and (max-width: 700px) {
     :root {
         --Popup-Display: none;
@@ -126,7 +134,7 @@ zam-map-fab[open]:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--Bianco);
     flex-direction: column;
     overflow: hidden;
 
@@ -169,7 +177,7 @@ zam-asset-popup[active] {
     border: 1px solid var(--GrigioChiaro);
     border-radius: var(--Popup-CR);
     box-shadow: var(--Generic-Shadow);
-    color: #ffffff;
+    color: var(--Bianco);
 
     padding: 0;
     padding-left: 10px;
