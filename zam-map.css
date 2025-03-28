@@ -194,5 +194,18 @@ zam-asset-popup[active] {
     /* Temp */
     justify-content: center;
     align-items: start;
+
+    animation: zam-asset-popup-appear 0.25s ease-in-out;
 }
 
+@keyframes zam-asset-popup-appear {
+    0% {
+        transform: translateY(10px);
+        opacity: 0%;
+    }
+
+    100% {
+        transform: translateY(0px);
+        opacity: 100%;
+    }
+}
