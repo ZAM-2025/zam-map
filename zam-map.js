@@ -76,7 +76,7 @@ class ZAMMapFAB extends HTMLElement {
     }
 
     add(/**@type {Array} */ floors, selected, map, path, isDummy) {
-        console.log("Loading floor " + selected);
+        console.log("Loading floor " + selected.label);
         // Resetto eventuali contenuti precedenti
         this.innerHTML = "";
         ClearPolys(map);
@@ -103,7 +103,6 @@ class ZAMMapFAB extends HTMLElement {
 function ClearPolys(map) {
     map.eachLayer(function(layer) {
         if (layer._path != undefined) {
-            console.log(layer);
             map.removeLayer(layer);
         }
     });
