@@ -138,7 +138,7 @@ function LoadPolys(map, floor, isDummy) {
     }
 
     auth.getUserInfo((userInfo) => {
-        auth.getFloorAssets(floor, (assets) => {
+        auth.getActiveFloorAssets(floor, (assets) => {
             // Dati dal server
             for(var asset of assets) {
                 var coords = JSON.parse(asset.coords);
