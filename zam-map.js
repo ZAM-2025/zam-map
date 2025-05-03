@@ -205,44 +205,42 @@ function LoadPolys(map, floor, isDummy) {
                     polygon.off('mousemove');
                 });
     
-                if(userInfo.type != ZAMUserType.GESTORE) {
-                    polygon.on('click', (e) => {
-                        var bars = document.getElementsByTagName("zam-booking-sidebar");
-                        for(var elem of bars) {
-                            elem.remove();
-                        }
+                polygon.on('click', (e) => {
+                    var bars = document.getElementsByTagName("zam-booking-sidebar");
+                    for(var elem of bars) {
+                        elem.remove();
+                    }
+                    
+                    console.log(e);
+                    var name = e.target.options["name"];
+                    var id = e.target.options["id"];
+                    console.log(e.target.options);
+        
+                    auth.getBookingsByAsset(e.target.options.id, (bookings) => {
+                        var isFree = true;
+        
+                        var start = null;
+                        var end = null;
                         
-                        console.log(e);
-                        var name = e.target.options["name"];
-                        var id = e.target.options["id"];
-                        console.log(e.target.options);
+                        if(bookings.length > 0) {
+                            for(var booking of bookings) {
+                                if(booking.isBooked) {
+                                    var startDate = new Date(booking.body.inizio);
+                                    var endDate = new Date(booking.body.fine);
         
-                        auth.getBookingsByAsset(e.target.options.id, (bookings) => {
-                            var isFree = true;
+                                    start = startDate.getHours() + ":" + startDate.getMinutes();
+                                    end = endDate.getHours() + ":" + endDate.getMinutes();
         
-                            var start = null;
-                            var end = null;
-                            
-                            if(bookings.length > 0) {
-                                for(var booking of bookings) {
-                                    if(booking.isBooked) {
-                                        var startDate = new Date(booking.body.inizio);
-                                        var endDate = new Date(booking.body.fine);
-        
-                                        start = startDate.getHours() + ":" + startDate.getMinutes();
-                                        end = endDate.getHours() + ":" + endDate.getMinutes();
-        
-                                        isFree = false;
-                                        break;
-                                    }
+                                    isFree = false;
+                                    break;
                                 }
                             }
+                        }
         
-                            var bookBar = new BookingSidebar();
-                            bookBar.add(name, start, end, isFree, id);
-                        });
+                        var bookBar = new BookingSidebar();
+                        bookBar.add(name, start, end, isFree, id);
                     });
-                }
+                });
                 
                 polygon.addTo(map);
             }
