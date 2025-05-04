@@ -138,18 +138,21 @@ function LoadPolys(map, floor, isDummy) {
     }
 
     auth.getUserInfo((userInfo) => {
-        auth.getActiveFloorAssets(floor, (assets) => {
+        auth.getFloorAssets(floor, (assets) => {
             // Dati dal server
             for(var asset of assets) {
                 var coords = JSON.parse(asset.coords);
     
                 // Poligono invisibile
+                var opacity = (asset.active) ? 0.0 : 0.2;
+
                 var polygon = L.polygon(coords, {
-                    opacity: 0.0,
-                    fillOpacity: 0.0,
+                    opacity: opacity,
+                    fillOpacity: opacity,
                     name: asset.nome,
                     id: asset.id,
-                    data: asset
+                    data: asset,
+                    color: 'red'
                 });
             
                 polygon.on('mouseover', (e) => {
