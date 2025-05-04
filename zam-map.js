@@ -151,6 +151,7 @@ function LoadPolys(map, floor, isDummy) {
                     fillOpacity: opacity,
                     name: asset.nome,
                     id: asset.id,
+                    active: asset.active,
                     data: asset,
                     color: 'red'
                 });
@@ -175,7 +176,10 @@ function LoadPolys(map, floor, isDummy) {
                             }
                         }
     
-                        if(isFree) {
+                        if (e.target.options["active"] == false) {
+                            indicator.setAttribute("nd", "");
+                            indicator.innerText = "Non disponibile";
+                        } else if(isFree) {
                             indicator.setAttribute("libero", "");
                             indicator.innerText = "Libero";
                         } else {
