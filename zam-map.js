@@ -1,6 +1,11 @@
 const POPUP_X_OFFSET = -100;
 const POPUP_Y_OFFSET = -75;
 
+let markerIcon = L.icon({
+    iconUrl: "svg/marker.svg",
+    iconSize: [42, 42]
+});
+
 let ZAMMapType = {
     Floor: {
         path: "floor-1",
@@ -102,7 +107,7 @@ class ZAMMapFAB extends HTMLElement {
 
 function ClearPolys(map) {
     map.eachLayer(function(layer) {
-        if (layer._path != undefined) {
+        if (layer instanceof L.Polygon || layer instanceof L.Polyline || layer instanceof L.Circle || layer instanceof L.Rectangle || layer instanceof L.Marker) {
             map.removeLayer(layer);
         }
     });
@@ -129,6 +134,22 @@ function LoadPolys(map, floor, isDummy) {
             polygon.addTo(map);
         });
 
+        map.on("mousedown", (e) => {
+            if (e.originalEvent.button === 1) {
+                console.log(e.latlng);
+                L.marker(e.latlng).addTo(map);
+                points.push(e.latlng);
+
+                var sql = "INSERT INTO asset (id, stato, tipo, coords, nome, piano, attivo, ismarker) ";
+
+                let nome = prompt("Nome?");
+                let tipo = prompt("Tipo?");
+
+                sql += `VALUES (DEFAULT, 'LIBERO', '${tipo}', '${JSON.stringify([e.latlng])}', '${nome}', ${floor}, true, true)`;
+                console.log(sql);
+            }
+        });
+
         map.on("contextmenu", (e) => {
             alert(JSON.stringify(points));
             points = [];
@@ -142,19 +163,31 @@ function LoadPolys(map, floor, isDummy) {
             // Dati dal server
             for(var asset of assets) {
                 var coords = JSON.parse(asset.coords);
+                console.log(coords);
     
                 // Poligono invisibile
                 var opacity = (asset.active) ? 0.0 : 0.2;
+                var polygon;
 
-                var polygon = L.polygon(coords, {
-                    opacity: opacity,
-                    fillOpacity: opacity,
-                    name: asset.nome,
-                    id: asset.id,
-                    active: asset.active,
-                    data: asset,
-                    color: 'red'
-                });
+                if(asset.isMarker) {
+                    var polygon = L.marker(coords[0], {
+                        name: asset.nome,
+                        id: asset.id,
+                        active: asset.active,
+                        data: asset,
+                        icon: markerIcon
+                    });
+                } else {
+                    var polygon = L.polygon(coords, {
+                        opacity: opacity,
+                        fillOpacity: opacity,
+                        name: asset.nome,
+                        id: asset.id,
+                        active: asset.active,
+                        data: asset,
+                        color: 'red'
+                    });
+                } 
             
                 polygon.on('mouseover', (e) => {
                     popup.setAttribute("active", "");
