@@ -225,7 +225,7 @@ function LoadPolys(map, floor, isDummy) {
         
                     auth.getBookingsByAsset(e.target.options.id, (bookings) => {
                         var isFree = true;
-        
+                                
                         var start = null;
                         var end = null;
                         
@@ -235,9 +235,9 @@ function LoadPolys(map, floor, isDummy) {
                                     var startDate = new Date(booking.body.inizio);
                                     var endDate = new Date(booking.body.fine);
         
-                                    start = startDate.getHours() + ":" + startDate.getMinutes();
-                                    end = endDate.getHours() + ":" + endDate.getMinutes();
-        
+                                    start = String(startDate.getHours()).padStart(2, '0') + ":" + String(startDate.getMinutes()).padStart(2, '0');
+                                    end = String(endDate.getHours()).padStart(2, '0') + ":" + String(endDate.getMinutes()).padStart(2, '0');
+
                                     isFree = false;
                                     break;
                                 }
@@ -245,7 +245,7 @@ function LoadPolys(map, floor, isDummy) {
                         }
         
                         var bookBar = new BookingSidebar();
-                        bookBar.add(name, start, end, isFree, id);
+                        bookBar.add(name, start, end, isFree, id, false, false, e.target.options["active"]);
                     });
                 });
                 
